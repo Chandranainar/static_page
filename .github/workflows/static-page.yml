@@ -1,0 +1,78 @@
+name: Static Page CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  smoke-test:
+    name: Smoke test static page
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify page file
+        run: test -f index.html
+
+      - name: Serve and check page
+        run: |
+          python3 -m http.server 8080 &
+          server_pid="$!"
+          trap 'kill "$server_pid"' EXIT
+
+          for attempt in 1 2 3 4 5; do
+            if curl --fail --silent --show-error http://127.0.0.1:8080/index.html > /tmp/index.html; then
+              break
+            fi
+            sleep 1
+          done
+          grep -q "Leaf &amp; Kettle" /tmp/index.html
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: smoke-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare static site
+        run: |
+          mkdir -p _site
+          cp index.html _site/index.html
+          touch _site/.nojekyll
+
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
