@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaf & Kettle Tea Shop</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17211b;
+      --muted: #647069;
+      --paper: #fbfaf4;
+      --mint: #d8efe3;
+      --leaf: #2f6d50;
+      --leaf-dark: #1f4d39;
+      --rose: #e36f5b;
+      --gold: #d9a63a;
+      --line: #d8ded7;
+      --white: #ffffff;
+      --shadow: 0 22px 48px rgba(23, 33, 27, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(47, 109, 80, 0.18), transparent 34rem),
+        linear-gradient(180deg, #fbfaf4 0%, #eef7f2 48%, #fbfaf4 100%);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      color: var(--white);
+      background: var(--leaf);
+      box-shadow: 0 10px 24px rgba(47, 109, 80, 0.24);
+      font-weight: 900;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover {
+      color: var(--leaf-dark);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: var(--leaf);
+      color: var(--white);
+      font-weight: 800;
+      box-shadow: 0 12px 22px rgba(47, 109, 80, 0.18);
+    }
+
+    .button.secondary {
+      background: var(--white);
+      color: var(--leaf-dark);
+      border-color: var(--line);
+      box-shadow: none;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.85fr);
+      gap: 48px;
+      align-items: center;
+      min-height: min(680px, calc(100vh - 150px));
+      padding: 36px 0 64px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: var(--leaf-dark);
+      font-size: 0.8rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 30px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--rose);
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(3rem, 8vw, 6.7rem);
+      line-height: 0.92;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.4vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .hero-art {
+      position: relative;
+      min-height: 520px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #d9eee2;
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(23, 33, 27, 0.26), transparent 48%),
+        radial-gradient(circle at 72% 22%, rgba(217, 166, 58, 0.5), transparent 12rem),
+        radial-gradient(circle at 16% 84%, rgba(227, 111, 91, 0.34), transparent 10rem);
+      z-index: 1;
+    }
+
+    .tea-visual {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hours {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      z-index: 2;
+      width: min(250px, calc(100% - 36px));
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .hours strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--leaf-dark);
+      font-size: 0.92rem;
+    }
+
+    .hours span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .section {
+      padding: 74px 0;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .section-heading p {
+      max-width: 430px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .menu-card {
+      min-height: 246px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: 0 14px 28px rgba(23, 33, 27, 0.07);
+    }
+
+    .menu-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .tea-dot {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.86), transparent 0.55rem),
+        var(--leaf);
+      box-shadow: inset 0 -12px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .tea-dot.rose {
+      background:
+        radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.86), transparent 0.55rem),
+        var(--rose);
+    }
+
+    .tea-dot.gold {
+      background:
+        radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.86), transparent 0.55rem),
+        var(--gold);
+    }
+
+    .price {
+      color: var(--leaf-dark);
+      font-size: 1.1rem;
+      font-weight: 850;
+    }
+
+    .menu-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+      letter-spacing: 0;
+    }
+
+    .menu-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .feature-band {
+      background: var(--leaf-dark);
+      color: var(--white);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 46px;
+      align-items: center;
+    }
+
+    .feature-band p {
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 1.06rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      min-height: 132px;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .stat strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--mint);
+      font-size: 2.1rem;
+      line-height: 1;
+    }
+
+    .stat span {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.94rem;
+    }
+
+    .visit {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: center;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .visit h2 {
+      margin-bottom: 12px;
+    }
+
+    .visit p {
+      max-width: 640px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 28px 0 38px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 860px) {
+      .nav {
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero,
+      .feature-grid,
+      .visit {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: 0;
+        padding: 14px 0 18px;
+        gap: 28px;
+      }
+
+      .hero-art {
+        min-height: 420px;
+      }
+
+      .section-heading {
+        display: block;
+      }
+
+      .section-heading p {
+        margin-top: 12px;
+      }
+
+      .menu-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .shell {
+        width: min(100% - 24px, 1120px);
+      }
+
+      h1 {
+        font-size: 2.55rem;
+      }
+
+      .hero-copy {
+        margin-top: 16px;
+      }
+
+      .hero-actions {
+        margin-top: 20px;
+      }
+
+      .hero-actions,
+      .visit {
+        align-items: stretch;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-art {
+        min-height: 230px;
+      }
+
+      .hours {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        width: auto;
+      }
+
+      .section {
+        padding: 42px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell nav" aria-label="Main navigation">
+    <a class="brand" href="#">
+      <span class="brand-mark">L</span>
+      <span>Leaf &amp; Kettle</span>
+    </a>
+    <nav class="nav-links" aria-label="Tea shop sections">
+      <a href="#menu">Menu</a>
+      <a href="#story">Story</a>
+      <a href="#visit">Visit</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="shell hero">
+      <div>
+        <span class="eyebrow">Small batch tea bar</span>
+        <h1>Tea brewed for unhurried mornings.</h1>
+        <p class="hero-copy">
+          A calm neighborhood tea shop serving fragrant blends, bright fruit infusions,
+          and warm pastries from a counter lined with fresh herbs.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="#menu">View menu</a>
+          <a class="button secondary" href="#visit">Plan a visit</a>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-label="Illustration of a tea shop table with cups and leaves">
+        <svg class="tea-visual" viewBox="0 0 680 760" role="img" aria-hidden="true" focusable="false">
+          <rect width="680" height="760" fill="#d8efe3"/>
+          <circle cx="124" cy="118" r="78" fill="#f8e9bd"/>
+          <path d="M0 524 C124 442 218 480 334 416 C463 345 548 358 680 278 L680 760 L0 760 Z" fill="#7fbe9f"/>
+          <path d="M0 600 C126 520 226 560 354 498 C494 430 574 448 680 390 L680 760 L0 760 Z" fill="#2f6d50"/>
+          <ellipse cx="340" cy="576" rx="262" ry="54" fill="#1f4d39" opacity="0.22"/>
+          <rect x="118" y="460" width="430" height="52" rx="8" fill="#b86f45"/>
+          <rect x="156" y="500" width="24" height="172" rx="8" fill="#7b4630"/>
+          <rect x="486" y="500" width="24" height="172" rx="8" fill="#7b4630"/>
+          <ellipse cx="326" cy="418" rx="132" ry="42" fill="#ffffff"/>
+          <path d="M210 416 C216 492 252 544 326 544 C400 544 436 492 442 416 Z" fill="#fff7df"/>
+          <ellipse cx="326" cy="416" rx="116" ry="30" fill="#d9a63a"/>
+          <path d="M442 430 C520 416 530 516 446 508" fill="none" stroke="#fff7df" stroke-width="24" stroke-linecap="round"/>
+          <path d="M294 352 C262 312 322 292 294 250" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.76"/>
+          <path d="M348 352 C324 304 390 286 362 234" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.76"/>
+          <path d="M402 352 C382 318 432 294 412 260" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.76"/>
+          <circle cx="162" cy="382" r="28" fill="#e36f5b"/>
+          <circle cx="486" cy="366" r="24" fill="#e36f5b"/>
+          <path d="M522 234 C584 222 610 282 570 330 C514 326 488 266 522 234 Z" fill="#2f6d50"/>
+          <path d="M540 236 C542 278 554 306 570 330" fill="none" stroke="#d8efe3" stroke-width="6" stroke-linecap="round"/>
+          <path d="M150 254 C204 234 246 278 220 328 C168 338 126 298 150 254 Z" fill="#2f6d50"/>
+          <path d="M166 258 C174 292 192 312 220 328" fill="none" stroke="#d8efe3" stroke-width="6" stroke-linecap="round"/>
+          <rect x="84" y="96" width="118" height="42" rx="8" fill="#ffffff" opacity="0.68"/>
+          <rect x="96" y="108" width="72" height="6" rx="3" fill="#2f6d50" opacity="0.54"/>
+          <rect x="96" y="124" width="48" height="6" rx="3" fill="#e36f5b" opacity="0.54"/>
+        </svg>
+        <div class="hours">
+          <strong>Open today</strong>
+          <span>8:00 AM - 7:30 PM</span>
+          <span>Fresh masala chai every hour</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell section" id="menu">
+      <div class="section-heading">
+        <h2>House favorites</h2>
+        <p>Simple test content with clear cards, prices, and enough layout variety to check responsiveness.</p>
+      </div>
+      <div class="menu-grid">
+        <article class="menu-card">
+          <div class="menu-card-top">
+            <span class="tea-dot"></span>
+            <span class="price">$4.50</span>
+          </div>
+          <h3>Garden Mint Green</h3>
+          <p>Bright green tea with mint, lemon peel, and a soft honey finish.</p>
+        </article>
+        <article class="menu-card">
+          <div class="menu-card-top">
+            <span class="tea-dot rose"></span>
+            <span class="price">$5.25</span>
+          </div>
+          <h3>Hibiscus Cloud</h3>
+          <p>Tart hibiscus, apple, rosehip, and a chilled splash of sparkling water.</p>
+        </article>
+        <article class="menu-card">
+          <div class="menu-card-top">
+            <span class="tea-dot gold"></span>
+            <span class="price">$4.75</span>
+          </div>
+          <h3>Masala Gold Chai</h3>
+          <p>Black tea simmered with ginger, cardamom, cinnamon, and oat milk.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="feature-band section" id="story">
+      <div class="shell feature-grid">
+        <div>
+          <span class="eyebrow">Daily ritual</span>
+          <h2>Loose-leaf blends, brewed with care.</h2>
+          <p>
+            This page is intentionally lightweight, but it still includes realistic sections
+            for a tea shop: navigation, hero content, menu cards, shop stats, and a visit prompt.
+          </p>
+        </div>
+        <div class="stats" aria-label="Tea shop highlights">
+          <div class="stat">
+            <strong>18</strong>
+            <span>Loose-leaf blends on rotation</span>
+          </div>
+          <div class="stat">
+            <strong>6</strong>
+            <span>Fresh pastries baked each morning</span>
+          </div>
+          <div class="stat">
+            <strong>4.9</strong>
+            <span>Average guest rating this month</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell section" id="visit">
+      <div class="visit">
+        <div>
+          <h2>Stop in for a warm cup.</h2>
+          <p>123 Jasmine Lane, Market Square. Walk-ins welcome, takeaway ready, and plenty of window seats for a quiet pause.</p>
+        </div>
+        <a class="button" href="mailto:hello@example.com">Reserve a table</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell">
+    Built as a static HTML test page for Leaf &amp; Kettle.
+  </footer>
+</body>
+</html>
